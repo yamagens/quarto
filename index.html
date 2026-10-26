@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f3ed">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="クアルト">
+<meta name="description" content="非公式QUARTO練習アプリ。AI10段階・同じ端末で2人対戦。外部通信なしの単一HTML。">
+<title>QUARTO｜クアルト 練習室</title>
+<style>
+:root{color-scheme:light;--bg:#f5f3ed;--paper:#fffefa;--ink:#263c3c;--muted:#74817a;--line:#dedfd5;--teal:#216c61;--teal-soft:#e7eee5;--orange:#b56642;--orange-soft:#f7eadd;--red:#a5483a;--gold:#b79047;--radius:20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6;-webkit-text-size-adjust:100%}button,input,select{font:inherit}button{color:inherit;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}button,select{border:1px solid var(--line);border-radius:12px;background:var(--paper)}button{min-height:44px;padding:9px 15px;transition:background .15s,border-color .15s,box-shadow .15s}button:disabled{cursor:default}button:focus-visible,summary:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #4286ab;outline-offset:3px}button:not(:disabled):active{filter:brightness(.95)}[hidden]{display:none!important}h1,h2,h3,p{margin:0}svg{display:block}a{color:var(--teal)}.app{max-width:1080px;margin:0 auto;padding:26px 32px calc(26px + env(safe-area-inset-bottom))}.header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 0 22px;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:13px}.brand-icon{display:grid;grid-template-columns:repeat(2,13px);gap:5px}.brand-icon i{height:13px;border-radius:3px;background:var(--teal)}.brand-icon i:nth-child(2){border-radius:50%;background:#c6b792}.brand-icon i:nth-child(3){border-radius:50%;background:#daceb3}.brand-icon i:nth-child(4){background:transparent;border:3px solid var(--teal)}h1{font-size:27px;font-weight:630;line-height:1.1;letter-spacing:4px}.brand p{color:var(--muted);font-size:10px;letter-spacing:1.2px;margin-top:7px}.header-actions{display:flex;gap:8px}.quiet-btn{background:transparent;font-size:12px}.new-btn{font-size:12px;background:var(--ink);color:white;border-color:var(--ink)}.metadata{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:15px 0 16px;color:var(--muted);font-size:11px}.badges{display:flex;flex-wrap:wrap;gap:6px}.badge{padding:3px 9px;border-radius:6px;background:#e9e9df;color:#54685c;font-size:10px;letter-spacing:.3px}.badge.accent{background:var(--teal-soft);color:var(--teal)}.save-note{white-space:nowrap;font-size:10px}.save-note:before{content:"";display:inline-block;width:5px;height:5px;background:#74997c;border-radius:50%;margin-right:5px;vertical-align:2px}#surface{transform-origin:center}.turned{transform:rotate(180deg)}.turn-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:17px 21px;margin-bottom:18px;border:1px solid #d4dfd2;border-left:4px solid var(--teal);border-radius:15px;background:var(--teal-soft);min-height:91px}.turn-banner.p1{border-color:#e7d8c7;border-left-color:var(--orange);background:var(--orange-soft)}.eyebrow{display:flex;align-items:center;gap:7px;letter-spacing:1.5px;font-size:10px;font-weight:700;color:var(--teal);margin-bottom:3px}.p1 .eyebrow{color:var(--orange)}.turn-banner h2{font-size:20px;line-height:1.4;font-weight:650;letter-spacing:.5px}.turn-banner p{font-size:12px;color:#5a7163;margin-top:3px}.turn-icon{flex-shrink:0;width:63px;height:65px;display:grid;place-items:center;color:#8fa693}.turn-icon svg{width:61px;height:65px}.turn-icon .step-number{font-family:Georgia,serif;font-size:48px;line-height:1;opacity:.6;font-style:italic}.layout{display:grid;grid-template-columns:minmax(0,1.32fr) minmax(0,1fr);gap:25px;align-items:start}.board-col,.side-col{min-width:0}.players{display:flex;align-items:center;gap:8px;margin:0 0 13px}.player{flex:1;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid transparent;padding:5px 9px 8px;min-width:0}.player .name{font-size:12px;white-space:nowrap}.player.active{border-bottom-color:var(--teal)}.player.p1.active{border-bottom-color:var(--orange)}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);margin-right:8px}.p1 .dot{background:var(--orange)}.player small{font-size:9px;color:var(--muted);white-space:nowrap}.versus{color:#adada0;font:italic 12px Georgia,serif}.board-frame{background:#e6d8ba;border:1px solid #d0c1a0;box-shadow:0 5px 0 #c3b28f,0 13px 24px #4739190c;border-radius:25px;padding:18px;position:relative}.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;aspect-ratio:1;touch-action:manipulation}.cell{position:relative;display:flex;align-items:center;justify-content:center;min-height:0;padding:2px;border-radius:16px;border:1px solid #d7c8a8;background:#ede4ce;box-shadow:inset 0 1px 3px #a18c6220;aspect-ratio:1;overflow:hidden;touch-action:manipulation}.cell:before{content:"";width:12px;height:12px;border:1px solid #d0c2a6;border-radius:50%;position:absolute}.cell.occupied:before,.cell.preview:before{display:none}.cell .coord{position:absolute;left:7px;top:4px;font-size:9px;letter-spacing:.3px;color:#aa9875;z-index:2}.cell svg{width:86%;height:90%;position:relative;z-index:1;pointer-events:none}.cell .piece-label{position:absolute;bottom:1px;right:4px;font-size:8px;letter-spacing:.4px;color:#6f694f;background:#eee5d18c;border-radius:3px;padding:0 2px;pointer-events:none;z-index:2}.cell.playable{cursor:pointer}.cell.playable:hover{background:#f5eddc}.cell.preview{border:2px solid var(--teal);background:#e6ecdb}.cell.preview svg{opacity:.68}.cell.last{box-shadow:inset 0 0 0 2px #a99569}.cell.winning{background:#cfd9b5;box-shadow:inset 0 0 0 2px #668450;border-color:#668450}.cell.hint{background:#dbe8cd;border:2px dashed var(--teal)}.cell.immediate:after{content:"★";position:absolute;right:5px;top:1px;font-size:14px;color:var(--teal);z-index:4}.board-caption{display:flex;justify-content:space-between;gap:8px;margin-top:14px;color:var(--muted);font-size:10px;min-height:20px}.board-caption .move-caption{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:75%}.toolbar{display:flex;gap:7px;margin-top:10px}.toolbar button{flex:1;padding:8px 5px;font-size:11px;background:transparent;white-space:nowrap}.toolbar button:disabled{opacity:.4}.toolbar svg{display:inline-block;vertical-align:-3px;width:15px;height:15px;margin-right:3px}.panel-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px}.panel-title h3{font-size:12px;font-weight:650;letter-spacing:.4px}.panel-title small{font-size:10px;color:var(--muted)}.pool-panel{background:var(--paper);border:1px solid var(--line);padding:17px;border-radius:var(--radius)}.pool{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.piece-button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-height:0;height:81px;padding:4px 1px 3px;border:1px solid #e8e7df;background:#f6f5ee;border-radius:10px}.piece-button svg{height:58px;width:54px;max-width:96%;pointer-events:none}.piece-button .piece-label{font-size:8px;line-height:1.3;letter-spacing:1px;color:#777a69;pointer-events:none}.piece-button .piece-no{position:absolute;top:3px;left:4px;color:#a8aa9c;font-size:8px;line-height:1;pointer-events:none}.piece-button:disabled{cursor:default}.piece-button.used{opacity:.25;background:transparent;box-shadow:none;border:1px dashed #d9d9cf}.piece-button.used svg{opacity:.5}.piece-button:not(:disabled):hover{background:#eeefe3;border-color:#a7b99e}.piece-button.selected{background:#e4ecdd;border:2px solid var(--teal)}.piece-button.hint{background:#e4ecdd;border:2px dashed var(--teal)}.piece-button.danger:not(.used):after{content:"!";display:grid;place-items:center;position:absolute;top:2px;right:3px;width:12px;height:12px;font-size:9px;font-weight:bold;color:var(--red);background:#f4ded2;border-radius:50%}.piece-button.waiting{border-color:#b79d74;background:#eee6d5;opacity:.6}.pool-note{font-size:10px;color:var(--muted);margin-top:10px}.action-box{display:flex;align-items:center;justify-content:space-between;gap:9px;background:#fffefa;border:1px solid var(--line);padding:12px 13px;border-radius:15px;margin-top:12px;min-height:85px;box-shadow:0 5px 18px #263c3c04}.action-preview{width:40px;flex-shrink:0}.action-preview svg{width:40px;height:48px}.action-text{flex:1;min-width:0}.action-text strong{display:block;font-size:11px;line-height:1.5}.action-text span{font-size:9px;color:var(--muted);display:block;line-height:1.5;margin-top:3px}.primary{background:var(--teal);border:1px solid var(--teal);color:white;font-size:12px;font-weight:600}.primary:disabled{background:#e0e4d9;border-color:#e0e4d9;color:#919b8f}.action-box .primary{min-width:119px;padding:10px 12px}.p1-button{background:var(--orange);border-color:var(--orange)}.legend{padding:13px 3px 0}.legend-title{font-size:10px;letter-spacing:.6px;color:var(--muted);margin-bottom:6px}.legend-row{display:flex;gap:5px;flex-wrap:wrap}.legend-chip{display:flex;align-items:center;gap:5px;border:1px solid #dddfd3;border-radius:6px;padding:3px 6px;font-size:9px;color:#61725f}.legend-chip b{font-size:9px;font-weight:600}.legend p{color:var(--muted);font-size:10px;margin:9px 0 0}.helper-panel{position:relative;margin-top:12px;padding:12px 14px;background:#edf0e4;border:1px solid #d5ddc9;border-radius:13px;font-size:12px}.helper-panel strong{display:block;margin-right:22px}.helper-panel p{font-size:11px;margin-top:5px;line-height:1.7;color:#566d58}.helper-panel .x{position:absolute;top:3px;right:4px;min-height:32px;padding:0;width:32px;border:0;background:transparent;color:var(--muted)}.handoff{margin-bottom:13px;padding:14px 17px;border:1px solid #d4dbcf;border-radius:14px;background:#fffefa;display:flex;align-items:center;justify-content:space-between;gap:12px}.handoff strong{font-size:13px}.handoff p{font-size:11px;color:var(--muted)}.claim-row{display:flex;gap:8px;margin:12px 0 0}.claim-row button{flex:1;font-size:12px}.claim{background:#dcca9e;border-color:#c0a669}.result-panel{margin-top:16px;padding:19px 22px;background:#eef0e2;border:1px solid #c8d1b4;border-radius:16px;display:flex;align-items:center;justify-content:space-between;gap:16px}.result-panel h3{font:italic 28px Georgia,serif;letter-spacing:2px;color:#66804b}.result-panel strong{display:block;margin-top:3px;font-size:15px}.result-panel p{font-size:11px;color:#70805f;margin-top:5px}.bottom-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:25px;padding:16px 0;border-top:1px solid var(--line);color:var(--muted)}.check-group{display:flex;gap:16px;flex-wrap:wrap}.check{display:flex;align-items:center;gap:5px;font-size:10px;cursor:pointer}.check input{accent-color:var(--teal);width:16px;height:16px}.check.disabled{opacity:.45;cursor:default}.bottom-bar button{padding:5px 12px;font-size:11px;min-height:38px;background:transparent}.history{border-top:1px solid var(--line);padding-top:13px;font-size:11px;color:var(--muted)}summary{cursor:pointer;font-size:11px}.history ol{padding-left:26px;max-height:160px;overflow:auto}.history li{margin:4px 0}.footnote{display:flex;justify-content:space-between;gap:10px;color:#989e91;font-size:9px;margin-top:22px}.footnote span:last-child{white-space:nowrap}.notice{position:fixed;left:50%;transform:translateX(-50%);bottom:30px;max-width:min(90vw,560px);border-radius:14px;padding:13px 21px;box-shadow:0 8px 30px #122e2b20;background:var(--ink);color:white;z-index:40;font-size:12px}.modal-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:#233b354d;z-index:60;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}.modal{width:100%;max-width:510px;max-height:calc(100dvh - 48px);overflow:auto;overscroll-behavior:contain;border:1px solid #fffefa;background:var(--paper);border-radius:23px;box-shadow:0 20px 100px #233b3526;padding:26px}.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}.modal h2{font-size:21px;letter-spacing:.6px}.modal .close{min-width:40px;min-height:40px;padding:4px;background:transparent;font-size:19px}.modal-intro{font-size:12px;color:var(--muted);margin:0 0 19px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px 14px}.field{display:flex;flex-direction:column;gap:6px;font-size:11px;font-weight:600}.field.full{grid-column:1/-1}.field select{width:100%;padding:11px 10px;color:var(--ink);min-height:46px;font-size:13px}.field select:disabled{opacity:.5}.field small{font-size:10px;color:var(--muted);font-weight:400}.range-row{display:flex;align-items:center;gap:14px}.range-row input{flex:1;width:0;accent-color:var(--teal);min-height:40px}.level-val{display:grid;place-items:center;border-radius:10px;background:var(--teal-soft);min-width:49px;height:41px;color:var(--teal);font-size:17px}.modal-footer{margin-top:23px;display:flex;gap:9px}.modal-footer button{flex:1}.info-block{margin:16px 0 0;padding:13px 15px;background:#f1f1e8;border-radius:12px;font-size:11px;color:#72806a;line-height:1.8}.rule-block{margin-top:18px}.rule-block h3{font-size:13px;margin-bottom:7px}.rule-block p{font-size:12px;color:#637460;line-height:1.9}.rule-block em{font-style:normal;font-weight:650;color:var(--teal)}.sample-pieces{display:flex;align-items:end;justify-content:center;gap:7px;margin:5px 0 18px;background:#f1ede0;border-radius:14px;padding:9px 15px}.sample-pieces svg{height:84px;width:74px}.button-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.button-grid button{font-size:12px}.danger-button{color:var(--red)}.spinner{width:16px;height:16px;border:2px solid #a3b3a0;border-top-color:var(--teal);border-radius:50%;display:inline-block;animation:spin 1s linear infinite;vertical-align:-3px;margin-right:5px}@keyframes spin{to{transform:rotate(360deg)}}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(min-width:1100px){.app{padding-top:35px}.layout{gap:32px}.board-frame{padding:22px}.piece-button{height:87px}.piece-button svg{height:63px;width:61px}.turn-banner{margin-bottom:21px}.pool-panel{padding:20px}}
+@media(max-width:760px){.app{padding:16px 18px calc(20px + env(safe-area-inset-bottom))}.header{padding-bottom:15px}.layout{gap:18px;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}.brand p{letter-spacing:.5px}.turn-banner{padding:12px 16px;margin-bottom:12px;min-height:77px}.turn-banner h2{font-size:17px}.turn-banner p{font-size:11px}.turn-icon{width:52px;height:55px}.turn-icon svg{height:54px;width:51px}.pool-panel{padding:12px}.piece-button{height:68px}.piece-button svg{height:47px;width:43px}.board-frame{padding:12px;border-radius:20px}.board{gap:4px}.cell{border-radius:13px}.action-box{padding:10px;gap:6px;flex-wrap:wrap}.action-box .primary{flex:1;width:100%}.action-preview{width:34px}.action-preview svg{width:34px;height:41px}.players{margin-bottom:10px}.player{padding:4px 3px 7px}.player small{font-size:8px}.toolbar button{font-size:10px}.check-group{gap:8px}.legend-row{gap:4px}.legend-chip{font-size:8px}}
+@media(max-width:560px){.app{max-width:450px;padding:14px 15px calc(105px + env(safe-area-inset-bottom))}.header{gap:6px;padding-bottom:12px}.brand{gap:9px}.brand h1{font-size:23px;letter-spacing:3px}.brand p{font-size:9px;margin-top:5px;letter-spacing:.5px}.brand-icon{grid-template-columns:repeat(2,10px);gap:4px}.brand-icon i{height:10px}.brand-icon i:nth-child(4){border-width:2px}.header-actions{gap:6px}.header-actions button{padding:8px 10px;font-size:10px;min-height:40px}.metadata{margin:10px 0;font-size:10px;gap:5px}.badge{font-size:9px;padding:2px 6px}.save-note{font-size:9px}.turn-banner{padding:9px 13px;min-height:72px;margin-bottom:10px;gap:5px}.eyebrow{font-size:9px;margin-bottom:2px}.turn-banner h2{font-size:16px;letter-spacing:0}.turn-banner p{font-size:10px}.turn-icon{height:49px;width:46px}.turn-icon svg{height:48px;width:45px}.turn-icon .step-number{font-size:37px}.layout{display:flex;flex-direction:column;gap:15px}.board-col,.side-col{width:100%}.players{margin-bottom:7px;gap:7px}.player{padding:1px 6px 5px}.player .name{font-size:11px}.player small{font-size:9px}.board-frame{max-width:324px;margin:0 auto;padding:12px;border-radius:21px}.board{gap:5px}.cell{border-radius:11px}.cell .coord{font-size:8px;top:2px;left:5px}.cell .piece-label{font-size:7px}.cell svg{height:90%;width:87%}.board-caption{max-width:324px;margin:10px auto 0;font-size:9px;min-height:16px}.toolbar{margin:7px auto 0;gap:6px}.toolbar button{min-height:38px;font-size:10px;padding:6px 5px}.toolbar svg{width:13px;height:13px}.pool-panel{padding:11px;border-radius:16px}.panel-title{margin-bottom:7px}.panel-title h3{font-size:11px}.panel-title small{font-size:9px}.pool{grid-template-columns:repeat(8,minmax(0,1fr));gap:4px}.piece-button{height:60px;padding:2px 0 3px;border-radius:7px}.piece-button svg{height:44px;width:40px}.piece-button .piece-label{font-size:7px;letter-spacing:0}.piece-button .piece-no{font-size:6px;top:2px;left:3px}.pool-note{font-size:9px;margin-top:6px}.action-box{position:fixed;bottom:0;left:0;right:0;z-index:20;border-radius:17px 17px 0 0;border:1px solid #dedfd5;padding:10px 16px calc(10px + env(safe-area-inset-bottom));margin:0;min-height:78px;box-shadow:0 -5px 26px #263c3c0b;gap:10px;flex-wrap:nowrap;background:#fffefaf5;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}.action-box .primary{flex:0 0 auto;min-width:118px;width:auto;font-size:11px;padding:12px 10px}.action-preview{width:35px}.action-preview svg{width:35px;height:46px}.action-text strong{font-size:11px}.action-text span{font-size:9px}.legend{padding:11px 2px 0}.legend-title{display:none}.legend-chip{font-size:9px}.legend p{font-size:9px;margin-top:6px}.bottom-bar{margin-top:17px;padding:11px 0;align-items:flex-start}.check-group{gap:7px 11px}.check{font-size:9px}.check input{width:15px;height:15px}.bottom-bar button{min-height:38px;white-space:nowrap}.history{padding-top:10px}.footnote{font-size:8px;margin-top:16px}.footnote span:first-child{max-width:77%}.modal-overlay{padding:15px}.modal{max-height:calc(100dvh - 30px);padding:20px;border-radius:21px}.modal h2{font-size:20px}.form-grid{gap:12px}.field{font-size:10px}.field select{font-size:12px;padding:10px 7px}.notice{bottom:102px;max-width:90vw;width:max-content;font-size:11px}.result-panel{margin-top:13px;padding:15px}.result-panel h3{font-size:24px}.result-panel strong{font-size:13px}.result-panel button{font-size:11px}.helper-panel{font-size:11px}.helper-panel p{font-size:10px}#surface.turned .action-box{position:static;border-radius:13px;margin-top:12px;padding:11px;backdrop-filter:none}.turned{margin-bottom:0}}
+@media(max-width:370px){.app{padding-left:11px;padding-right:11px}.board-frame{max-width:299px}.turn-banner h2{font-size:15px}.piece-button{height:56px}.piece-button svg{height:40px}.pool{gap:3px}.pool-panel{padding:9px}.action-box{padding-left:11px;padding-right:11px;gap:7px}.action-box .primary{min-width:108px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+@media(max-width:560px){.metadata{margin:8px 0}.turn-banner{min-height:56px;margin-bottom:6px;padding:8px 13px}.turn-banner p{display:none}.turn-icon{height:40px;width:43px}.turn-icon svg{height:42px;width:41px}.board-frame{max-width:300px}.players{margin-bottom:5px}.layout{gap:12px}.board-caption{margin-top:9px}.toolbar{margin-top:6px}}
+@media(max-width:560px) and (max-height:800px){.board-frame{max-width:264px}.piece-button{height:54px}.piece-button svg{height:39px}.turn-banner{min-height:52px}.toolbar button{min-height:35px}.app{padding-top:10px}.metadata{margin:7px 0}.pool-panel{padding:9px}.header-actions button{min-height:36px}.turn-banner h2{font-size:15px}}
+.save-note.failed:before{background:#b79047}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header">
+  <div class="brand"><span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span><div><h1>QUARTO</h1><p>クアルト ／ 相手の一手を選ぶ。</p></div></div>
+  <nav class="header-actions" aria-label="メニュー"><button id="helpBtn" class="quiet-btn">遊び方</button><button id="newBtn" class="new-btn">新しい対局</button></nav>
+</header>
+<div class="metadata"><div id="badges" class="badges"></div><span id="saveNote" class="save-note">端末に自動保存</span></div>
+<div id="surface">
+  <section class="turn-banner" id="turnBanner" aria-live="polite" aria-atomic="true"><div><div class="eyebrow" id="turnEyebrow"></div><h2 id="turnTitle"></h2><p id="turnSubtitle"></p></div><div class="turn-icon" id="turnIcon" aria-hidden="true"></div></section>
+  <div id="handoff" class="handoff" hidden><div><strong id="handoffTitle"></strong><p>端末を渡したら、ボタンを押してください。</p></div><button id="readyBtn" class="primary">自分の番をはじめる</button></div>
+  <main class="layout">
+    <section class="board-col" aria-label="盤面">
+      <div id="players" class="players"></div>
+      <div class="board-frame"><div id="board" class="board" aria-label="4行4列の盤面"></div></div>
+      <div class="board-caption"><span class="move-caption" id="lastMove"></span><span id="placedCount"></span></div>
+      <div class="toolbar"><button id="undoBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 4 3 9l5 5M3 9h10a6 6 0 0 1 0 12h-2"/></svg>待った</button><button id="hintBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 18h6m-5 3h4M8 14a7 7 0 1 1 8 0l-1 3H9z"/></svg>ヒント</button><button id="flipBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M19 8a8 8 0 0 0-14-2L2 9m0-6v6h6M5 16a8 8 0 0 0 14 2l3-3m0 6v-6h-6"/></svg>180°回転</button></div>
+      <div class="helper-panel" id="hintPanel" hidden><button class="x" id="clearHintBtn" aria-label="ヒントを閉じる">×</button><strong id="hintTitle"></strong><p id="hintBody"></p></div>
+      <div class="claim-row" id="claimRow" hidden><button class="claim" id="claimBtn">QUARTO！と宣言</button><button id="drawBtn" hidden>宣言せず終了</button></div>
+    </section>
+    <section class="side-col" aria-label="駒の選択と操作">
+      <div class="pool-panel"><div class="panel-title"><h3 id="poolTitle">相手に渡す駒</h3><small id="remainingCount"></small></div><div class="pool" id="pool" aria-label="共通の駒置き場"></div><p class="pool-note" id="poolNote"></p></div>
+      <div class="action-box" id="actionBox"><div class="action-preview" id="actionPreview" aria-hidden="true"></div><div class="action-text"><strong id="actionTitle"></strong><span id="actionDesc"></span></div><button class="primary" id="confirmBtn"></button></div>
+      <div class="legend"><div class="legend-title">FOUR ATTRIBUTES ／ 駒の4つの特徴</div><div class="legend-row"><span class="legend-chip"><b>色</b> 白 / 黒</span><span class="legend-chip"><b>高さ</b> 高 / 低</span><span class="legend-chip"><b>形</b> 丸 / 四角</span><span class="legend-chip"><b>穴</b> あり / なし</span></div><p id="winRuleNote">縦・横・斜めに4個。どれか1つの特徴が同じなら勝ち。</p></div>
+    </section>
+  </main>
+  <section id="resultPanel" class="result-panel" hidden aria-live="polite"><div><h3 id="resultWord">Quarto!</h3><strong id="resultTitle"></strong><p id="resultDetail"></p></div><button id="rematchBtn" class="primary">もう一局</button></section>
+</div>
+<div class="bottom-bar"><div class="check-group"><label class="check" id="assistLabel"><input id="assistToggle" type="checkbox">勝てるマス・危険な駒</label><label class="check" id="autoRotateLabel"><input id="autoRotateToggle" type="checkbox">対面で自動回転</label></div><button id="moreBtn">保存・設定</button></div>
+<details class="history"><summary id="historyTitle">対局の記録</summary><ol id="historyList"></ol></details>
+<footer class="footnote"><span>QUARTO：Blaise Muller / Gigamic　非公式の練習用アプリ</span><span>v1.0.0 · LOCAL ONLY</span></footer>
+</div>
+<div id="notice" class="notice" role="status" hidden></div>
+<input type="file" id="importInput" accept="application/json,.json" hidden>
+<div class="modal-overlay" id="modalOverlay" hidden>
+  <section class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1">
+    <div class="modal-head"><h2 id="modalTitle"></h2><button class="close" id="modalClose" aria-label="閉じる">×</button></div>
+    <div id="modalBody"></div>
+  </section>
+</div>
+<noscript><p style="padding:24px">このゲームを遊ぶには、ブラウザのJavaScriptを有効にしてください。ファイルのプレビュー画面では動かないことがあります。</p></noscript>
+<script>
+/* Original Quarto rules/search implementation. No dependencies. */
+function createQuartoCore() {
+  'use strict';
+  const FULL = 65535, MATE = 10000;
+  const BASE = [
+    [0,1,2,3],[4,5,6,7],[8,9,10,11],[12,13,14,15],
+    [0,4,8,12],[1,5,9,13],[2,6,10,14],[3,7,11,15],
+    [0,5,10,15],[3,6,9,12]
+  ];
+  const ATTR_SETS = [0xaaaa,0xcccc,0xf0f0,0xff00];
+  const POP = new Uint8Array(65536);
+  for (let i=1; i<65536; i++) POP[i] = POP[i>>1] + (i&1);
+  const bits = m => { const a=[]; for(let i=0;i<16;i++) if(m & (1<<i)) a.push(i); return a; };
+  function rules(variant='classic') {
+    const lines=BASE.map(l=>l.slice());
+    if(variant==='squares') for(let r=0;r<3;r++) for(let c=0;c<3;c++) {
+      const p=r*4+c; lines.push([p,p+1,p+4,p+5]);
+    }
+    const featureMask=variant==='color'?1:variant==='colorShape'?5:15;
+    const byCell=Array.from({length:16},()=>[]);
+    lines.forEach((l,i)=>l.forEach(c=>byCell[c].push(i)));
+    return {lines,byCell,featureMask};
+  }
+  function common(values, featureMask=15) {
+    if(values.length!==4 || values.some(v=>v<0)) return 0;
+    return ((values[0]&values[1]&values[2]&values[3]) |
+      ~(values[0]|values[1]|values[2]|values[3])) & featureMask;
+  }
+  function wins(board,R,last=-1) {
+    const ids=last>=0?R.byCell[last]:R.lines.map((_,i)=>i);
+    const result=[];
+    for(const id of ids) {
+      const cells=R.lines[id], vals=cells.map(c=>board[c]);
+      const mask=common(vals,R.featureMask);
+      if(mask) result.push({id,cells:cells.slice(),mask,value:vals[0]});
+    }
+    return result;
+  }
+  function available(board,pending=-1) {
+    let m=FULL;
+    for(const p of board) if(p>=0) m &= ~(1<<p);
+    if(pending>=0) m &= ~(1<<pending);
+    return m;
+  }
+  // Bit i in map[cell] means that piece i would win on that empty cell.
+  function threatMap(board,R) {
+    const map=new Uint16Array(16);
+    for(const line of R.lines) {
+      let missing=-1,n=0,all=15,any=0;
+      for(const c of line) {
+        const p=board[c];
+        if(p<0){missing=c;n++;} else {all&=p;any|=p;}
+      }
+      if(n!==1) continue;
+      const shared=(all|~any)&R.featureMask;
+      let m=0;
+      for(let k=0;k<4;k++) if(shared&(1<<k)) {
+        m |= (all&(1<<k))?ATTR_SETS[k]:(FULL^ATTR_SETS[k]);
+      }
+      map[missing]|=m;
+    }
+    return map;
+  }
+  function danger(board,R) {
+    let m=0; for(const v of threatMap(board,R)) m|=v; return m;
+  }
+  function winningCells(board,piece,R) {
+    const map=threatMap(board,R),out=[];
+    for(let i=0;i<16;i++) if(board[i]<0 && (map[i]&(1<<piece))) out.push(i);
+    return out;
+  }
+  function empties(board) { return board.reduce((a,p,i)=>{if(p<0)a.push(i);return a;},[]); }
+  function mix(a) {
+    for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+    return a;
+  }
+  // A bounded heuristic is deliberately kept far away from proven mate scores.
+  // All safe gifts below mean only "does not allow an immediate win", not "cannot lose".
+  function placementRanking(board,piece,avail,R) {
+    const E=empties(board), th=threatMap(board,R), out=[];
+    for(const cell of E) {
+      if(th[cell]&(1<<piece)) {out.push({action:cell,score:MATE+E.length});continue;}
+      if(!avail) {out.push({action:cell,score:0});continue;}
+      board[cell]=piece;
+      const safe=avail & ~danger(board,R), count=POP[safe];
+      let score;
+      if(!safe) score=-(MATE+E.length-1);
+      else {
+        // Freedom to choose a gift, plus opportunities to build a threat.
+        let structure=0;
+        for(const id of R.byCell[cell]) {
+          let all=15,any=0,n=0;
+          for(const c of R.lines[id]) if(board[c]>=0){all&=board[c];any|=board[c];n++;}
+          structure += POP[(all|~any)&R.featureMask] * (n===2?1:n===3?2:0);
+        }
+        score=22 + 36*count/POP[avail] + structure*.35;
+      }
+      board[cell]=-1;
+      out.push({action:cell,score});
+    }
+    return out.sort((a,b)=>b.score-a.score);
+  }
+  function heuristicPlace(board,piece,avail,R) {
+    const ranked=placementRanking(board,piece,avail,R);
+    return ranked.length?ranked[0].score:0;
+  }
+  function giftRanking(board,avail,R) {
+    const bad=danger(board,R), E=empties(board).length, out=[];
+    for(const p of bits(avail)) out.push({action:p,
+      score:(bad&(1<<p))?-(MATE+E):-heuristicPlace(board,p,avail&~(1<<p),R)});
+    return out.sort((a,b)=>b.score-a.score);
+  }
+  function analyze(input) {
+    const board=input.board.slice(), pending=input.pending, phase=input.phase;
+    const R=rules(input.variant), avail=available(board,pending), E=empties(board).length;
+    const level=Math.max(1,Math.min(10,Number(input.level)||5));
+    const start=Date.now();
+    const budgets=[0,0,0,15,35,75,150,300,650,1250];
+    const budget=Number.isFinite(input.timeMs)?Math.max(0,input.timeMs):budgets[level-1];
+    const deadline=start+budget;
+    const maxDepth=Number.isInteger(input.maxDepth)?input.maxDepth:([0,0,0,1,2,3,4,5,7,16][level-1]);
+    const root=phase==='choose'?giftRanking(board,avail,R):placementRanking(board,pending,avail,R);
+    if(!root.length) return {action:null,score:0,depth:0,nodes:0,exact:true,outcome:'draw',ms:Date.now()-start};
+    let ordered=mix(root.slice()).sort((a,b)=>b.score-a.score);
+    const raw=ordered[0];
+    // Easy levels sometimes overlook a tactic; level 5+ always takes immediate wins
+    // and never hands over an immediately winning piece when a safe one exists.
+    if(!input.hint && level<=4) {
+      const randomChance=[.95,.55,.22,.07][level-1];
+      if(Math.random()<randomChance) {
+        const chosen=root[Math.floor(Math.random()*root.length)];
+        return {action:chosen.action,score:chosen.score,depth:0,nodes:0,exact:false,outcome:'unknown',ms:Date.now()-start};
+      }
+    }
+    let best=raw.action,score=raw.score,completed=0,nodes=0;
+    const cache=new Map();
+    const TIMEOUT={timeout:true};
+    function check() {nodes++;if((nodes&63)===0 && Date.now()>=deadline) throw TIMEOUT;}
+    const keyOf=(p,d)=>board.map(v=>String.fromCharCode(v+65)).join('')+':'+p+':'+d;
+    function place(p,a,d,alpha,beta) {
+      check();
+      const th=threatMap(board,R);
+      let ec=0;
+      for(let c=0;c<16;c++) if(board[c]<0){ec++;if(th[c]&(1<<p))return MATE+empties(board).length;}
+      if(ec===0 || !a) return 0;
+      const ranked=placementRanking(board,p,a,R);
+      if(d<=0) return ranked[0].score;
+      const key=keyOf(p,d), origA=alpha,origB=beta;
+      const hit=cache.get(key);
+      if(hit){if(hit.flag==='exact')return hit.v;if(hit.flag==='lower')alpha=Math.max(alpha,hit.v);else beta=Math.min(beta,hit.v);if(alpha>=beta)return hit.v;}
+      let value=-Infinity;
+      for(const item of ranked) {
+        board[item.action]=p;
+        let v;
+        try {v=choose(a,d-1,alpha,beta);} finally {board[item.action]=-1;}
+        if(v>value)value=v;
+        if(v>alpha)alpha=v;
+        if(alpha>=beta)break;
+      }
+      if(cache.size<65000) cache.set(key,{v:value,flag:value<=origA?'upper':value>=origB?'lower':'exact'});
+      return value;
+    }
+    function choose(a,d,alpha,beta) {
+      check();
+      if(!a)return 0;
+      const safe=a&~danger(board,R);
+      if(!safe)return -(MATE+empties(board).length);
+      const ranked=giftRanking(board,safe,R);
+      let value=-Infinity;
+      for(const item of ranked) {
+        const v=-place(item.action,a&~(1<<item.action),d,-beta,-alpha);
+        if(v>value)value=v;
+        if(v>alpha)alpha=v;
+        if(alpha>=beta)break;
+      }
+      return value;
+    }
+    // Obvious tactics are already proved without search. Avoid spending time on
+    // symmetry-equivalent opening gifts, but still let the placement search work.
+    if(!(Math.abs(score)>=MATE) && !(phase==='choose' && E===16)) {
+      const limit=Math.min(E,maxDepth);
+      for(let d=1;d<=limit;d++) {
+        if(Date.now()>=deadline)break;
+        let iterScore=-Infinity,iterBest=best;
+        const newOrder=[];
+        try {
+          for(const item of ordered) {
+            if(Date.now()>=deadline)throw TIMEOUT;
+            let v;
+            if(phase==='choose') v=-place(item.action,avail&~(1<<item.action),d,-Infinity,-iterScore);
+            else if(item.score>=MATE) v=item.score;
+            else {
+              board[item.action]=pending;
+              try{v=choose(avail,d-1,iterScore,Infinity);}finally{board[item.action]=-1;}
+            }
+            newOrder.push({action:item.action,score:v});
+            if(v>iterScore){iterScore=v;iterBest=item.action;}
+          }
+          completed=d;score=iterScore;best=iterBest;
+          ordered=newOrder.sort((a,b)=>b.score-a.score);
+          if(Math.abs(score)>=MATE || completed>=E)break;
+        } catch(e) {if(e!==TIMEOUT)throw e;break;}
+      }
+    }
+    const exact=Math.abs(score)>=MATE || completed>=E;
+    return {action:best,score,depth:completed,nodes,exact,
+      outcome:exact?(score>=MATE?'win':score<=-MATE?'loss':'draw'):'unknown',ms:Date.now()-start};
+  }
+  return {FULL,MATE,bits,rules,common,wins,available,threatMap,danger,winningCells,empties,analyze};
+}
+if (typeof module!=='undefined' && module.exports) module.exports=createQuartoCore;
+
+</script>
+<script>
+(() => {
+'use strict';
+const VERSION='1.0.0', SAVE_KEY='quarto-browser-v1-save', C=createQuartoCore();
+const $=id=>document.getElementById(id);
+const defaultConfig={mode:'ai',level:5,firstGiver:'0',variant:'classic',declaration:'auto'};
+const defaultPrefs={assist:false,autoRotate:false,handoff:true};
+let prefs={...defaultPrefs}, S, history=[], selectedPiece=-1, selectedCell=-1;
+let hint=null, busy=false, busyPurpose='', paused=false, manualFlip=false;
+let timer=null, activeWorker=null, workerURL=null, watchdog=null, jobSerial=0;
+let modalOpen=false,lastFocus=null,noticeTimer=null,saveFailed=false,fallbackWarned=false;
+const clone=o=>JSON.parse(JSON.stringify(o));
+const escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const coord=i=>'ABCD'[i%4]+(Math.floor(i/4)+1);
+const playerName=i=>S.config.mode==='local'?`プレイヤー${i+1}`:S.config.mode==='watch'?`AI ${i+1}`:(i===0?'あなた':'AI');
+const variantNames={classic:'通常ルール',squares:'上級：2×2も有効',color:'初級：色だけ',colorShape:'初級：色と形'};
+const levelNames=['気まま','はじめて','やさしい','初級','標準','中級','手ごわい','上級','とても強い','最強設定'];
+const human=i=>S.config.mode==='local'||(S.config.mode==='ai'&&i===0);
+const canAct=()=>human(S.actor)&&!busy&&!S.handoff&&!modalOpen&&['choose','place'].includes(S.phase);
+const attrs=p=>[p&1?'黒':'白',p&2?'高い':'低い',p&4?'四角':'丸',p&8?'穴あり':'穴なし'];
+const desc=p=>attrs(p).join('・');
+function sharedWords(line){return attrs(line.value).filter((_,k)=>line.mask&(1<<k));}
+function pieceSVG(p){
+  const dark=!!(p&1),tall=!!(p&2),square=!!(p&4),hole=!!(p&8),y=tall?23:44;
+  const top=dark?'#6b8276':'#f1dfb7',front=dark?'#405d54':'#d6bd89',side=dark?'#2e4840':'#b9a171',stroke=dark?'#29453b':'#9a8359',inside=dark?'#132f25':'#796744';
+  let shape;
+  if(square){
+    shape=`<path d="M17 ${y} 40 ${y+12}V77L17 65Z" fill="${front}" stroke="${stroke}" stroke-width="1.1"/><path d="M40 ${y+12} 63 ${y}V65L40 77Z" fill="${side}" stroke="${stroke}" stroke-width="1.1"/><path d="M17 ${y} 40 ${y-12} 63 ${y} 40 ${y+12}Z" fill="${top}" stroke="${stroke}" stroke-width="1.2"/>`;
+    if(hole)shape+=`<path d="M29 ${y} 40 ${y-6} 51 ${y} 40 ${y+6}Z" fill="${inside}" stroke="${stroke}" stroke-width="1.8"/><path d="M29 ${y} 40 ${y-4} 51 ${y}" fill="none" stroke="${side}" stroke-width="2"/>`;
+    else shape+=`<path d="M22 ${y} 40 ${y-9} 57 ${y}" fill="none" stroke="${dark?'#86998b':'#fff0d1'}" stroke-width="1" opacity=".65"/>`;
+  }else{
+    shape=`<path d="M17 ${y}V65a23 11 0 0 0 46 0V${y}Z" fill="${front}" stroke="${stroke}" stroke-width="1.1"/><path d="M54 ${y+5}V73q6-2 9-8V${y}" fill="${side}" opacity=".7"/><ellipse cx="40" cy="${y}" rx="23" ry="11" fill="${top}" stroke="${stroke}" stroke-width="1.2"/>`;
+    if(hole)shape+=`<ellipse cx="40" cy="${y}" rx="11" ry="5.8" fill="${inside}" stroke="${stroke}" stroke-width="1.8"/><path d="M30 ${y}q10-6 20 0" fill="none" stroke="${side}" stroke-width="2"/>`;
+    else shape+=`<path d="M24 ${y-3}q15-10 32 0" fill="none" stroke="${dark?'#91a390':'#fff0d1'}" stroke-width="1.1" opacity=".6"/>`;
+  }
+  return `<svg viewBox="0 0 80 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><ellipse cx="41" cy="79" rx="26" ry="4" fill="#263c3c" opacity=".09"/>${shape}</svg>`;
+}
+function fresh(config){
+  const actor=config.firstGiver==='random'?(Math.random()<.5?0:1):Number(config.firstGiver);
+  return {config:{...config},board:Array(16).fill(-1),pending:-1,phase:'choose',actor,
+    firstActor:actor,lastCell:-1,lastAction:null,logs:[],winner:null,endReason:null,handoff:false};
+}
+function notify(message){
+  $('notice').textContent=message;$('notice').hidden=false;
+  clearTimeout(noticeTimer);noticeTimer=setTimeout(()=>{$('notice').hidden=true;},4300);
+}
+function dataObject(){return {app:'quarto-browser',schema:1,version:VERSION,savedAt:new Date().toISOString(),state:S,history,prefs};}
+function save(){
+  try{localStorage.setItem(SAVE_KEY,JSON.stringify(dataObject()));saveFailed=false;}
+  catch(_){saveFailed=true;}
+  $('saveNote').textContent=saveFailed?'自動保存できません':'端末に自動保存';$('saveNote').classList.toggle('failed',saveFailed);
+}
+function validateConfig(c){
+  if(!c||!['ai','local','watch'].includes(c.mode)||!Number.isInteger(c.level)||c.level<1||c.level>10||!['0','1','random'].includes(c.firstGiver)||!Object.hasOwn(variantNames,c.variant)||!['auto','manual'].includes(c.declaration)|| (c.mode!=='local'&&c.declaration==='manual'))throw Error('対局設定が不正です。');
+  return {mode:c.mode,level:c.level,firstGiver:c.firstGiver,variant:c.variant,declaration:c.declaration};
+}
+function validateState(s){
+  if(!s||!Array.isArray(s.board)||s.board.length!==16)throw Error('盤面データが不正です。');
+  const config=validateConfig(s.config),board=s.board.slice(),used=new Set();
+  for(const p of board){if(!Number.isInteger(p)||p< -1||p>15)throw Error('駒の番号が不正です。');if(p>=0){if(used.has(p))throw Error('同じ駒が重複しています。');used.add(p);}}
+  if(![0,1].includes(s.actor)||![0,1].includes(s.firstActor)||!['choose','place','done','final'].includes(s.phase)||!Number.isInteger(s.pending)||s.pending< -1||s.pending>15)throw Error('手番データが不正です。');
+  if(s.pending>=0&&used.has(s.pending))throw Error('受け取った駒がすでに盤上にあります。');
+  if(s.phase==='place'&&s.pending<0 || ['choose','final'].includes(s.phase)&&s.pending!==-1)throw Error('駒と手番が一致していません。');
+  if((s.phase==='choose'||s.phase==='place')&&used.size===16)throw Error('満員の盤面では続行できません。');
+  if(s.phase==='final'&&(used.size!==16||config.declaration!=='manual'))throw Error('終局確認データが不正です。');
+  if(!Number.isInteger(s.lastCell)||s.lastCell< -1||s.lastCell>15||(s.lastCell>=0&&board[s.lastCell]<0))throw Error('最終手が不正です。');
+  if(used.size>0&&s.lastCell<0 || used.size===0&&s.lastCell!==-1)throw Error('最終手と盤面が一致しません。');
+  const R=C.rules(config.variant);
+  if(config.declaration==='auto'&&s.phase!=='done'&&C.wins(board,R).length)throw Error('勝敗と盤面が一致しません。');
+  if(s.phase==='done'){
+    if(!['line','draw','resign'].includes(s.endReason))throw Error('終局理由が不正です。');
+    if(s.endReason==='draw'){if(s.winner!==-1||used.size!==16)throw Error('引き分けデータが不正です。');}
+    else if(![0,1].includes(s.winner))throw Error('勝者が不正です。');
+    if(s.endReason==='line'&&!C.wins(board,R,s.lastCell).length)throw Error('勝ちの並びがありません。');
+  }else if(s.winner!==null||s.endReason!==null)throw Error('対局中の勝敗データが不正です。');
+  if(!Array.isArray(s.logs)||s.logs.length>50)throw Error('記録が不正です。');
+  const logs=s.logs.map(l=>{
+    if(!l||!['choose','place','claim','resign','draw'].includes(l.type)||![0,1].includes(l.actor))throw Error('記録に不正な操作があります。');
+    if(['choose','place'].includes(l.type)&&(!Number.isInteger(l.p)||l.p<0||l.p>15))throw Error('記録の駒が不正です。');
+    if(l.type==='place'&&(!Number.isInteger(l.cell)||l.cell<0||l.cell>15))throw Error('記録のマスが不正です。');
+    return {type:l.type,actor:l.actor,...(['choose','place'].includes(l.type)?{p:l.p}:{}),...(l.type==='place'?{cell:l.cell}:{})};
+  });
+  const lastAction=logs.length?logs[logs.length-1]:null;
+  return {config,board,pending:s.pending,phase:s.phase,actor:s.actor,firstActor:s.firstActor,lastCell:s.lastCell,lastAction,logs,winner:s.winner,endReason:s.endReason,handoff:!!s.handoff&&config.mode==='local'&&s.phase==='place'};
+}
+function validateData(d){
+  if(!d||d.app!=='quarto-browser'||d.schema!==1)throw Error('このアプリの保存ファイルではありません。');
+  const state=validateState(d.state);
+  if(!Array.isArray(d.history)||d.history.length>50)throw Error('待った用データが不正です。');
+  const h=d.history.map(validateState);
+  const p={...defaultPrefs};for(const k of Object.keys(p))if(typeof d.prefs?.[k]==='boolean')p[k]=d.prefs[k];
+  return {state,history:h,prefs:p};
+}
+function cleanupWorker(){
+  if(activeWorker){activeWorker.terminate();activeWorker=null;}
+  if(workerURL){URL.revokeObjectURL(workerURL);workerURL=null;}
+  if(watchdog){clearTimeout(watchdog);watchdog=null;}
+}
+function cancelJobs(){
+  jobSerial++;if(timer){clearTimeout(timer);timer=null;}cleanupWorker();busy=false;busyPurpose='';
+}
+function clearSelection(){selectedCell=-1;selectedPiece=-1;hint=null;}
+function pushHistory(){history.push(clone(S));if(history.length>48)history.shift();}
+function addLog(l){S.logs.push(l);S.lastAction=l;}
+function finish(winner,reason){S.phase='done';S.winner=winner;S.endReason=reason;S.handoff=false;}
+function commitAction(action,fromAI=false){
+  if(!Number.isInteger(action)||action<0||action>15)return;
+  if(fromAI){if(human(S.actor)||S.handoff||!['choose','place'].includes(S.phase))return;}
+  else if(!canAct())return;
+  const R=C.rules(S.config.variant),actor=S.actor;
+  if(S.phase==='choose'){
+    if(!(C.available(S.board,S.pending)&(1<<action)))return;
+    pushHistory();S.pending=action;S.phase='place';S.actor=1-actor;
+    addLog({type:'choose',p:action,actor});
+    S.handoff=S.config.mode==='local'&&prefs.handoff;
+  }else if(S.phase==='place'){
+    if(S.board[action]!==-1||S.pending<0)return;
+    pushHistory();const p=S.pending;S.board[action]=p;S.pending=-1;S.lastCell=action;
+    addLog({type:'place',p,cell:action,actor});
+    const lines=C.wins(S.board,R,action),full=S.board.every(p=>p>=0);
+    if(S.config.declaration==='auto'&&lines.length)finish(actor,'line');
+    else if(full){if(S.config.declaration==='manual')S.phase='final';else finish(-1,'draw');}
+    else S.phase='choose';
+  }
+  clearSelection();save();render();scheduleAI();
+}
+function claim(){
+  if(S.config.declaration!=='manual'||S.phase==='done'||S.handoff||!human(S.actor))return;
+  const lines=S.lastCell>=0?C.wins(S.board,C.rules(S.config.variant),S.lastCell):[];
+  if(!lines.length){notify('この手で宣言できるQUARTOはありません。');return;}
+  pushHistory();addLog({type:'claim',actor:S.actor});finish(S.actor,'line');clearSelection();save();render();
+}
+function undo(){
+  if(selectedCell>=0||selectedPiece>=0){selectedCell=-1;selectedPiece=-1;render();return;}
+  if(!history.length)return;
+  cancelJobs();
+  do{S=history.pop();}while(history.length&&S.config.mode==='ai'&&!human(S.actor));
+  if(S.config.mode==='watch')paused=true;
+  S.handoff=false;clearSelection();save();render();scheduleAI();
+}
+function logText(l){
+  const name=playerName(l.actor);
+  if(l.type==='choose')return `${name} → ${playerName(1-l.actor)} に ${desc(l.p)}`;
+  if(l.type==='place')return `${name}：${coord(l.cell)} に ${desc(l.p)}`;
+  if(l.type==='claim')return `${name}：QUARTO！と宣言`;
+  if(l.type==='resign')return `${name}：投了`;
+  return '宣言せず、引き分けで終了';
+}
+function render(){
+  const R=C.rules(S.config.variant),available=C.available(S.board,S.pending),count=S.board.filter(p=>p>=0).length;
+  const manual=S.config.declaration==='manual',done=S.phase==='done',local=S.config.mode==='local';
+  const flip=(prefs.autoRotate&&local&&S.actor===1)!==manualFlip;
+  $('surface').classList.toggle('turned',flip);
+  $('flipBtn').setAttribute('aria-pressed',String(flip));
+  $('autoRotateToggle').checked=prefs.autoRotate;$('autoRotateToggle').disabled=!local;
+  $('autoRotateLabel').classList.toggle('disabled',!local);
+  $('assistToggle').checked=prefs.assist;$('assistToggle').disabled=manual;
+  $('assistLabel').classList.toggle('disabled',manual);
+  const modeLabel=S.config.mode==='ai'?'AIと対戦':local?'同じ端末で2人対戦':'AIどうしを観戦';
+  $('badges').innerHTML=`<span class="badge accent">${modeLabel}${local?'':` · Lv.${S.config.level}`}</span><span class="badge">${variantNames[S.config.variant]}</span><span class="badge">${manual?'宣言あり':'自動判定'}</span>`;
+  $('turnBanner').classList.toggle('p1',S.actor===1);
+  const choosing=S.phase==='choose',placing=S.phase==='place';
+  let eyebrow=`${playerName(S.actor)}の番 ／ ${choosing?'GIVE':'PLACE'}`,title,sub;
+  if(done){eyebrow='GAME OVER ／ 対局終了';title=S.winner===-1?'引き分けです':`${playerName(S.winner)}の勝ち`;sub=S.endReason==='line'?'共通する特徴を持つ4個が揃いました。':S.endReason==='draw'?'16個すべてを置き、勝敗がつきませんでした。':'投了により対局が終了しました。';}
+  else if(S.phase==='final'){eyebrow=`${playerName(S.actor)} ／ 最後の宣言`;title='最後の駒を置きました';sub='揃っていたら宣言。揃っていなければ終了してください。';}
+  else if(S.handoff){title=`${playerName(S.actor)}に交代です`;sub='受け取った駒を、好きな空きマスに置きます。';}
+  else if(busy&&busyPurpose==='ai'){title=`${playerName(S.actor)}が考えています`;sub=choosing?'あなたに渡す駒を選んでいます。':'受け取った駒の置き場所を考えています。';if(S.config.mode==='watch'&&choosing)sub='相手に渡す駒を選んでいます。';}
+  else {title=choosing?`${playerName(1-S.actor)}に渡す駒を選ぶ`:'受け取った駒を盤に置く';sub=choosing?'どの駒を渡す？ 使うのは、あなたではなく相手です。':'空きマスをタップして、置く場所を決めてください。';if(!human(S.actor)&&paused)sub='観戦は一時停止中です。再開ボタンで続けられます。';}
+  $('turnEyebrow').innerHTML=(busy?'<span class="spinner" aria-hidden="true"></span>':'')+escapeHTML(eyebrow);
+  $('turnTitle').textContent=title;$('turnSubtitle').textContent=sub;
+  const iconPiece=placing?S.pending:choosing&&selectedPiece>=0?selectedPiece:-1;
+  $('turnIcon').innerHTML=iconPiece>=0?pieceSVG(iconPiece):`<span class="step-number">${done?'✓':choosing?'01':'02'}</span>`;
+  $('handoff').hidden=!S.handoff;$('handoffTitle').textContent=`${playerName(S.actor)}の番`;
+  $('players').innerHTML=[0,1].map(i=>`${i===1?'<span class="versus">vs</span>':''}<div class="player p${i} ${i===S.actor&&!done?'active':''}"><span class="name"><i class="dot" aria-hidden="true"></i>${playerName(i)}</span><small>${done?(S.winner===i?'WINNER':S.winner===-1?'DRAW':''):(i===S.actor?(placing?'置く番':choosing?'渡す番':'宣言の番'):'待機中')}</small></div>`).join('');
+  const winLines=done&&S.endReason==='line'?C.wins(S.board,R,S.lastCell):[];
+  const winCells=new Set(winLines.flatMap(l=>l.cells));
+  const immediate=prefs.assist&&!manual&&placing&&human(S.actor)?new Set(C.winningCells(S.board,S.pending,R)):new Set();
+  const playable=canAct()&&placing;
+  $('board').innerHTML=S.board.map((p,i)=>{
+    const preview=selectedCell===i&&p<0&&placing;
+    const classes=['cell',p>=0?'occupied':'',playable&&p<0?'playable':'',preview?'preview':'',i===S.lastCell?'last':'',winCells.has(i)?'winning':'',hint?.phase==='place'&&hint.action===i?'hint':'',immediate.has(i)?'immediate':''].filter(Boolean).join(' ');
+    return `<button type="button" class="${classes}" data-cell="${i}" aria-label="${coord(i)} ${p>=0?desc(p):'空きマス'}${preview?' 選択中':''}" aria-pressed="${preview}" ${(p<0&&!playable)?'disabled':''}><span class="coord" aria-hidden="true">${coord(i)}</span>${p>=0?pieceSVG(p):preview?pieceSVG(S.pending):''}${p>=0?`<span class="piece-label" aria-hidden="true">${p&2?'高':'低'}・${p&8?'穴有':'穴無'}</span>`:''}</button>`;
+  }).join('');
+  $('lastMove').textContent=S.lastAction?logText(S.lastAction):'駒は2人で共有します。';
+  $('placedCount').textContent=`${count} / 16 個`;
+  $('undoBtn').disabled=!history.length&&selectedPiece<0&&selectedCell<0;
+  $('hintBtn').disabled=!canAct()||manual;
+  $('poolTitle').textContent=choosing&&!done?'相手に渡す駒':'共通の駒置き場';
+  $('remainingCount').textContent=`残り ${C.bits(available).length} 個`;
+  const dangerous=prefs.assist&&!manual&&choosing?C.danger(S.board,R):0;
+  $('pool').innerHTML=Array.from({length:16},(_,p)=>{
+    const free=!!(available&(1<<p)),waiting=p===S.pending;
+    const classes=['piece-button',!free?(waiting?'waiting':'used'):'',selectedPiece===p?'selected':'',hint?.phase==='choose'&&hint.action===p?'hint':'',(dangerous&(1<<p))&&free?'danger':''].filter(Boolean).join(' ');
+    return `<button type="button" class="${classes}" data-piece="${p}" aria-label="駒${p+1} ${desc(p)}${!free?(waiting?' 受け取り中':' 使用済み'):''}" aria-pressed="${selectedPiece===p}" ${!free||!canAct()||!choosing?'disabled':''}><span class="piece-no" aria-hidden="true">${String(p+1).padStart(2,'0')}</span>${pieceSVG(p)}<span class="piece-label" aria-hidden="true">${p&2?'高':'低'}・${p&8?'穴有':'穴無'}</span></button>`;
+  }).join('');
+  $('poolNote').textContent=prefs.assist&&!manual?(choosing?'「!」の駒は、相手に1手で勝つ場所を与えます。':'盤面の「★」は、この駒で今すぐ勝てるマスです。'):'薄い駒は使用済み。駒を選んだ後に、特徴を確認できます。';
+  const piece=placing?S.pending:choosing?selectedPiece:-1;
+  $('actionPreview').hidden=piece<0;$('actionPreview').innerHTML=piece>=0?pieceSVG(piece):'';
+  let actionTitle,actionDesc,buttonText,buttonDisabled;
+  if(done){actionTitle='おつかれさまでした';actionDesc='盤面を振り返るか、次の一局へ。';buttonText='もう一局';buttonDisabled=false;}
+  else if(S.phase==='final'){actionTitle='宣言の最終確認';actionDesc='盤の下の宣言・終了ボタンを使います。';buttonText='宣言を確認';buttonDisabled=true;}
+  else if(piece>=0){actionTitle=attrs(piece).slice(0,3).join('・');actionDesc=attrs(piece)[3]+(placing?' ／ 置く駒':` ／ ${playerName(1-S.actor)}に渡す`);buttonText=choosing?'この駒を渡す':selectedCell>=0?`${coord(selectedCell)} に置く`:'マスを選んでください';buttonDisabled=!canAct()||(placing&&selectedCell<0);}
+  else {actionTitle='渡す駒をタップ';actionDesc='駒を選ぶと、ここに特徴が表示されます。';buttonText='駒を選んでください';buttonDisabled=true;}
+  if(busy){buttonText=busyPurpose==='hint'?'ヒントを解析中':'AI思考中…';buttonDisabled=true;}
+  if(S.handoff){buttonText='交代を確認';buttonDisabled=true;}
+  if(S.config.mode==='watch'&&!done){buttonText=paused?'観戦を再開':'一時停止';buttonDisabled=false;}
+  $('actionTitle').textContent=actionTitle;$('actionDesc').textContent=actionDesc;
+  $('confirmBtn').textContent=buttonText;$('confirmBtn').disabled=buttonDisabled;
+  $('confirmBtn').classList.toggle('p1-button',S.actor===1&&!done);
+  $('winRuleNote').textContent=S.config.variant==='squares'?'縦・横・斜め、または隣接する2×2。1つの特徴が同じなら勝ち。':S.config.variant==='color'?'初級ルール：縦・横・斜めに「同じ色」が4個で勝ち。':S.config.variant==='colorShape'?'初級ルール：縦・横・斜めに「同じ色」か「同じ形」が4個で勝ち。':'縦・横・斜めに4個。どれか1つの特徴が同じなら勝ち。';
+  $('claimRow').hidden=!manual||done;$('claimBtn').disabled=S.handoff;
+  $('drawBtn').hidden=S.phase!=='final';
+  $('hintPanel').hidden=!hint;
+  if(hint){$('hintTitle').textContent=hint.title;$('hintBody').textContent=hint.body;}
+  $('resultPanel').hidden=!done;
+  if(done){
+    $('resultWord').textContent=S.winner===-1?'Draw.':S.endReason==='line'?'Quarto!':'Game over.';
+    $('resultTitle').textContent=S.winner===-1?'引き分けです':`${playerName(S.winner)}の勝ちです`;
+    const words=[...new Set(winLines.flatMap(sharedWords))];
+    $('resultDetail').textContent=S.endReason==='line'?`共通の特徴：${words.map(w=>`「${w}」`).join('・')}。成立した4個を強調しています。`:S.endReason==='draw'?'すべての駒を置き終えました。':'相手の投了により終了しました。';
+  }
+  $('historyTitle').textContent=`対局の記録（${count}個を配置）`;
+  $('historyList').innerHTML=S.logs.map(l=>`<li>${escapeHTML(logText(l))}</li>`).join('');
+}
+function requestAnalysis(level,purpose,callback){
+  cancelJobs();const token=jobSerial;busy=true;busyPurpose=purpose;
+  const input={board:S.board.slice(),pending:S.pending,phase:S.phase,variant:S.config.variant,level,hint:purpose==='hint'};
+  const started=Date.now();render();
+  function deliver(result){
+    if(token!==jobSerial)return;
+    cleanupWorker();
+    const delay=purpose==='ai'?Math.max(0,420-(Date.now()-started)):0;
+    timer=setTimeout(()=>{
+      timer=null;if(token!==jobSerial)return;busy=false;busyPurpose='';callback(result);
+    },delay);
+  }
+  function fallback(){
+    if(token!==jobSerial)return;
+    cleanupWorker();
+    if(!fallbackWarned){fallbackWarned=true;notify('この環境では短時間の思考方式を使用します。');}
+    try{deliver(C.analyze({...input,level:3,timeMs:0,hint:true}));}
+    catch(_){busy=false;busyPurpose='';render();notify('解析できませんでした。新しい対局から再開してください。');}
+  }
+  try{
+    const source=`'use strict';\n${createQuartoCore.toString()}\nconst core=createQuartoCore();self.onmessage=e=>{try{self.postMessage({ok:true,result:core.analyze(e.data)});}catch(error){self.postMessage({ok:false,message:String(error)});}};`;
+    workerURL=URL.createObjectURL(new Blob([source],{type:'text/javascript'}));
+    activeWorker=new Worker(workerURL);
+    activeWorker.onmessage=e=>{if(token!==jobSerial)return;if(e.data?.ok)deliver(e.data.result);else fallback();};
+    activeWorker.onerror=e=>{e.preventDefault();fallback();};
+    watchdog=setTimeout(fallback,4500);
+    activeWorker.postMessage(input);
+  }catch(_){timer=setTimeout(fallback,10);}
+}
+function scheduleAI(){
+  if(modalOpen||busy||timer||S.handoff||paused||human(S.actor)||!['choose','place'].includes(S.phase))return;
+  timer=setTimeout(()=>{
+    timer=null;
+    if(modalOpen||paused||human(S.actor)||!['choose','place'].includes(S.phase))return;
+    requestAnalysis(S.config.level,'ai',result=>{
+      if(result.action===null){notify('AIが有効な手を見つけられませんでした。');render();return;}
+      commitAction(result.action,true);
+    });
+  },280);
+}
+function showHint(){
+  if(!canAct()||S.config.declaration==='manual')return;
+  hint={phase:S.phase,action:-1,title:'次の一手を考えています…',body:'相手が受け取る駒も含めて解析しています。'};
+  requestAnalysis(10,'hint',result=>{
+    const R=C.rules(S.config.variant),p=result.action;
+    if(p===null){hint=null;render();return;}
+    let title,body;
+    if(S.phase==='choose'){
+      title=`候補：${desc(p)}`;
+      const available=C.available(S.board),bad=C.danger(S.board,R),safe=available&~bad;
+      if(!safe)body='残りのどの駒を渡しても、相手に1手で揃える場所があります。相手の見落としがない限り、次の配置で勝たれてしまいます。';
+      else body='この駒なら、相手が次の1回の配置でQUARTOを作ることはできません。ただし、その先まで負けないという意味ではありません。';
+    }else{
+      title=`候補：${coord(p)} に置く`;
+      const b=S.board.slice();b[p]=S.pending;
+      const wins=C.wins(b,R,p);
+      if(wins.length)body=`ここに置くと ${[...new Set(wins.flatMap(sharedWords))].map(w=>`「${w}」`).join('・')} が4個揃い、その場で勝ちです。`;
+      else {
+        const a=C.available(b),safe=a&~C.danger(b,R),n=C.bits(safe).length;
+        if(!a)body='ここに置くと盤が埋まり、引き分けです。';
+        else if(!safe)body='この配置の後は、どの駒を渡しても相手に1手で揃える場所があります。';
+        else body=`ここに置いた後、相手に1手勝ちを許さずに渡せる駒は${n}個あります。置いたら、次に渡す駒も慎重に選びましょう。`;
+      }
+    }
+    if(result.nodes>0)body+=`（${result.nodes.toLocaleString()}局面を探索。必ずしも最善手を保証するものではありません。）`;
+    hint={phase:S.phase,action:p,title,body};render();
+  });
+}
+function openModal(title,html){
+  cancelJobs();if(hint?.action===-1)hint=null;
+  modalOpen=true;lastFocus=document.activeElement;
+  $('modalTitle').textContent=title;$('modalBody').innerHTML=html;$('modalOverlay').hidden=false;
+  document.body.style.overflow='hidden';render();setTimeout(()=>$('modalClose').focus(),10);
+}
+function closeModal(){
+  $('modalOverlay').hidden=true;document.body.style.overflow='';modalOpen=false;render();scheduleAI();
+  if(lastFocus?.isConnected)lastFocus.focus();else $('newBtn').focus();
+}
+function newModal(){
+  const c=S.config;
+  openModal('新しい対局',`<p class="modal-intro">相手に駒を渡し、渡された駒を置く。<br>4つの特徴から、共通点を見つけましょう。</p>
+    <div class="form-grid">
+      <label class="field full">対戦モード<select id="modeInput"><option value="ai">あなた vs AI</option><option value="local">2人対戦（同じ端末）</option><option value="watch">AIどうし（観戦）</option></select></label>
+      <label class="field full" id="levelField">AIの強さ<div class="range-row"><input id="levelInput" type="range" min="1" max="10" step="1"><output id="levelOutput" class="level-val">5</output></div><small id="levelHelp"></small></label>
+      <label class="field full">最初に駒を渡す人<select id="firstInput"></select><small>最初に置くのは、渡された側です。</small></label>
+      <label class="field">勝ちの条件<select id="variantInput"><option value="classic">通常：4つの特徴</option><option value="color">初級：色だけ</option><option value="colorShape">初級：色と形</option><option value="squares">上級：2×2も有効</option></select></label>
+      <label class="field">勝利の宣言<select id="declarationInput"><option value="auto">自動判定</option><option value="manual">QUARTO！と宣言</option></select><small id="declarationHelp">宣言ありは2人対戦専用です。</small></label>
+    </div>
+    <div class="info-block">このアプリでは「自動判定」が初期設定です。公式ルールの宣言・見落としは「QUARTO！と宣言」で練習できます。AI Lv.10も全局面での完全最善手を保証するものではありません。</div>
+    <div class="modal-footer"><button id="cancelNewBtn">戻る</button><button class="primary" id="startBtn">この設定で始める</button></div><p class="modal-intro" style="font-size:10px;margin:10px 0 0">開始すると現在の対局はリセットされます。必要な記録は先に書き出してください。</p>`);
+  $('modeInput').value=c.mode;$('levelInput').value=c.level;$('variantInput').value=c.variant;
+  function modeChange(){
+    const mode=$('modeInput').value,old=$('firstInput').value||c.firstGiver;
+    const names=mode==='local'?['プレイヤー1','プレイヤー2']:mode==='watch'?['AI 1','AI 2']:['あなた','AI'];
+    $('firstInput').innerHTML=`<option value="0">${names[0]}</option><option value="1">${names[1]}</option><option value="random">ランダム</option>`;$('firstInput').value=old;
+    $('levelField').hidden=mode==='local';$('declarationInput').disabled=mode!=='local';
+    if(mode!=='local')$('declarationInput').value='auto';
+  }
+  function levelChange(){const n=Number($('levelInput').value);$('levelOutput').textContent=n;$('levelHelp').textContent=`Lv.${n} ／ ${levelNames[n-1]}${n>=8?'。局面によっては約1〜2秒考えます。':n<=3?'。ときどき勝ち筋を見落とします。':'。強い設定ほど先を読みます。'}`;}
+  modeChange();$('firstInput').value=c.firstGiver;$('declarationInput').value=c.declaration;levelChange();
+  $('modeInput').addEventListener('change',modeChange);$('levelInput').addEventListener('input',levelChange);
+  $('cancelNewBtn').addEventListener('click',closeModal);
+  $('startBtn').addEventListener('click',()=>{
+    const config={mode:$('modeInput').value,level:Number($('levelInput').value),firstGiver:$('firstInput').value,variant:$('variantInput').value,declaration:$('modeInput').value==='local'?$('declarationInput').value:'auto'};
+    cancelJobs();S=fresh(config);history=[];clearSelection();paused=false;manualFlip=false;save();closeModal();
+    window.scrollTo({top:0,behavior:'auto'});
+  });
+}
+function helpModal(){
+  openModal('遊び方',`<p class="modal-intro">選ぶのは、相手が使う駒。</p><div class="sample-pieces">${[2,6,10,14].map(pieceSVG).join('')}</div>
+    <div class="rule-block"><h3>① 相手に渡す駒を選ぶ</h3><p>残っている駒をタップし、<em>「この駒を渡す」</em>で確定します。選んだ駒を置くのは相手です。</p></div>
+    <div class="rule-block"><h3>② 受け取った駒を置く</h3><p>空いているマスをタップし、<em>「○○に置く」</em>で確定します。続けて、同じ人が次に相手へ渡す駒を選びます。</p></div>
+    <div class="rule-block"><h3>③ 1つでも共通なら、QUARTO！</h3><p>縦・横・斜めの4個に「色」「高さ」「形」「穴」のどれか1つでも共通点があれば成立です。<em>駒は全員の共有物で、白黒はプレイヤーの色ではありません。</em>上の4個は「白・高い」が共通しています。</p></div>
+    <div class="rule-block"><h3>通常は、自動で勝敗を判定します</h3><p>公式ルールでは成立に気づいて宣言する必要があります。本アプリの初期設定は遊びやすい自動判定です。2人対戦では「QUARTO！と宣言」も選べます。</p></div>
+    <div class="rule-block"><h3>「宣言あり」でのタイミング</h3><p>置いた人は次の駒を渡す前に宣言します。見落として渡した場合、受け取った人は自分の駒を置く前に宣言すれば勝てます。両者とも見落として次の駒が置かれた後は、以前の並びでは宣言できません。最後の駒の配置後は、置いた人が宣言するか「宣言せず終了」を選びます。誤った宣言には本アプリでは罰則を設けていません。</p></div>
+    <div class="rule-block"><h3>初級・上級のルール</h3><p>「色だけ」「色と形」では、指定した特徴だけを判定します。「2×2も有効」では、通常の直線に加え、隣り合う4マスの正方形も判定します。</p></div>
+    <div class="rule-block"><h3>ヒント・待った・対面での操作</h3><p>ヒントは候補の駒やマスを点線で表示します。補助表示をONにすると、勝てる空きマスに★、相手にすぐ勝たれる駒に!が付きます。宣言ありでは、ヒント・補助表示は使えません。待ったはAIの応手も戻して、直前のあなたの判断からやり直します。2人対戦では、どちらのプレイヤーも同じタップ操作で遊べます。iPadを向かい合って使う場合は自動回転が便利です。</p></div>
+    <div class="rule-block"><h3>保存とプライバシー</h3><p>対局はこの端末・このブラウザに自動保存します。端末間の共有は「保存・設定」からJSONを書き出し、別端末で読み込みます。ブラウザのデータ消去・プライベート閲覧では失われることがあるため、大切な記録は書き出してください。ゲーム本体に外部ライブラリ・解析通信・広告はありません。</p></div>
+    <div class="info-block">非公式の練習用アプリです。ゲームの考案：Blaise Muller、出版：Gigamic。盤面と駒の描画は独自実装です。<br><a href="https://en.gigamic.com/modern-classics/1049-quarto-3421271300410.html" target="_blank" rel="noopener noreferrer">Gigamic公式の紹介とルール</a></div>
+    <div class="modal-footer"><button class="primary" id="helpDoneBtn">わかりました</button></div>`);
+  $('helpDoneBtn').addEventListener('click',closeModal);
+}
+function moreModal(){
+  openModal('保存・設定',`<p class="modal-intro">対局は自動保存されています。別端末に移すときは、保存ファイルを使います。</p>
+    <div class="button-grid"><button id="exportBtn">対局を書き出す</button><button id="importBtn">対局を読み込む</button></div>
+    <div class="rule-block"><h3>2人対戦の操作</h3><label class="check" style="font-size:12px"><input id="handoffToggle" type="checkbox" ${prefs.handoff?'checked':''}>交代時に「自分の番をはじめる」を表示</label><p style="font-size:11px;margin-top:7px">向かい合うときはメイン画面の「対面で自動回転」をONにします。画面全体のタップ位置も、回転した表示に追従します。</p></div>
+    <div class="rule-block"><h3>この対局</h3><div class="button-grid"><button id="pauseBtn" ${S.config.mode!=='watch'||S.phase==='done'?'disabled':''}>${paused?'観戦を再開':'観戦を一時停止'}</button><button class="danger-button" id="resignBtn" ${S.phase==='done'||!human(S.actor)?'disabled':''}>${playerName(S.actor)}が投了</button></div></div>
+    <div class="info-block">AIは制限時間つきの先読みで判断します。Lv.1〜4は見落としを含み、Lv.5以上はその場の勝ち・負けを優先します。Lv.10でも全局面の最善手は保証しません。2人対戦は同じ端末を使う方式で、離れた端末どうしの通信対戦ではありません。</div>
+    <div class="modal-footer"><button id="moreDoneBtn" class="primary">対局に戻る</button></div>`);
+  $('handoffToggle').addEventListener('change',e=>{prefs.handoff=e.target.checked;if(!prefs.handoff)S.handoff=false;save();});
+  $('moreDoneBtn').addEventListener('click',closeModal);
+  $('pauseBtn').addEventListener('click',()=>{paused=!paused;closeModal();});
+  $('exportBtn').addEventListener('click',()=>{
+    const blob=new Blob([JSON.stringify(dataObject(),null,2)],{type:'application/json'}),url=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=url;a.download=`quarto-save-${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),20000);notify('対局の保存ファイルを書き出しました。');
+  });
+  $('importBtn').addEventListener('click',()=>$('importInput').click());
+  $('resignBtn').addEventListener('click',()=>{
+    if(!window.confirm(`${playerName(S.actor)}が投了して、この対局を終了しますか？`))return;
+    pushHistory();addLog({type:'resign',actor:S.actor});finish(1-S.actor,'resign');clearSelection();save();closeModal();
+  });
+}
+$('board').addEventListener('click',e=>{
+  const b=e.target.closest('[data-cell]');if(!b)return;
+  const cell=Number(b.dataset.cell),p=S.board[cell];
+  if(p>=0){notify(`${coord(cell)}：${desc(p)}`);return;}
+  if(!canAct()||S.phase!=='place')return;
+  selectedCell=cell;render();
+});
+$('pool').addEventListener('click',e=>{
+  const b=e.target.closest('[data-piece]');if(!b||!canAct()||S.phase!=='choose')return;
+  const p=Number(b.dataset.piece);if(!(C.available(S.board,S.pending)&(1<<p)))return;
+  selectedPiece=p;render();
+});
+$('confirmBtn').addEventListener('click',()=>{
+  if(S.phase==='done'){newModal();return;}
+  if(S.config.mode==='watch'){paused=!paused;if(paused)cancelJobs();render();scheduleAI();return;}
+  if(S.phase==='choose'&&selectedPiece>=0)commitAction(selectedPiece);
+  else if(S.phase==='place'&&selectedCell>=0)commitAction(selectedCell);
+});
+$('readyBtn').addEventListener('click',()=>{S.handoff=false;save();render();});
+$('undoBtn').addEventListener('click',undo);$('hintBtn').addEventListener('click',showHint);
+$('clearHintBtn').addEventListener('click',()=>{if(busyPurpose==='hint')cancelJobs();hint=null;render();});
+$('flipBtn').addEventListener('click',()=>{manualFlip=!manualFlip;render();});
+$('autoRotateToggle').addEventListener('change',e=>{prefs.autoRotate=e.target.checked;manualFlip=false;save();render();});
+$('assistToggle').addEventListener('change',e=>{prefs.assist=e.target.checked;save();render();});
+$('claimBtn').addEventListener('click',claim);
+$('drawBtn').addEventListener('click',()=>{if(S.phase!=='final')return;pushHistory();addLog({type:'draw',actor:S.actor});finish(-1,'draw');save();render();});
+$('helpBtn').addEventListener('click',helpModal);$('newBtn').addEventListener('click',newModal);$('rematchBtn').addEventListener('click',newModal);
+$('moreBtn').addEventListener('click',moreModal);$('modalClose').addEventListener('click',closeModal);
+$('modalOverlay').addEventListener('click',e=>{if(e.target===$('modalOverlay'))closeModal();});
+$('modalOverlay').addEventListener('keydown',e=>{
+  if(e.key==='Escape'){e.preventDefault();closeModal();return;}
+  if(e.key!=='Tab')return;
+  const items=[...$('modal').querySelectorAll('button,input,select,a[href]')].filter(el=>!el.disabled&&el.getClientRects().length);
+  if(!items.length){e.preventDefault();return;}
+  const first=items[0],last=items[items.length-1];
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+});
+$('importInput').addEventListener('change',async e=>{
+  const file=e.target.files?.[0];e.target.value='';if(!file)return;
+  if(file.size>1000000){notify('保存ファイルが大きすぎます（上限1MB）。');return;}
+  try{
+    const d=validateData(JSON.parse(await file.text()));
+    if((S.logs.length>0)&&!window.confirm('現在の対局を、読み込んだ対局に置き換えますか？'))return;
+    cancelJobs();S=d.state;history=d.history;prefs=d.prefs;paused=S.config.mode==='watch';manualFlip=false;clearSelection();save();closeModal();notify('対局を読み込みました。');
+  }catch(error){notify(`読み込めませんでした：${error.message||'データが不正です。'}`);}
+});
+// Do not let a stale worker act in the background; resume only when the tab returns.
+document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelJobs();else {render();scheduleAI();}});
+window.addEventListener('pagehide',save);
+let loadMessage='';
+let storedRaw=null;
+try{storedRaw=localStorage.getItem(SAVE_KEY);}catch(_){loadMessage='この環境では自動保存が利用できません。必要な対局は「保存・設定」から書き出してください。';}
+if(storedRaw){try{const data=validateData(JSON.parse(storedRaw));S=data.state;history=data.history;prefs=data.prefs;}catch(_){loadMessage='以前の保存データを読み込めなかったため、新しい対局を表示します。';}}
+if(!S)S=fresh(defaultConfig);
+if(S.config.mode==='watch')paused=true;
+render();save();scheduleAI();if(loadMessage)notify(loadMessage);
+// Public read-only diagnostics for reproducible rule/UI tests. No hidden network.
+window.QuartoApp=Object.freeze({version:VERSION,getState:()=>clone(S),getHistory:()=>clone(history),getPrefs:()=>clone(prefs)});
+})();
+
+</script>
+</body>
+</html>
